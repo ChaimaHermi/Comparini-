@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche de Produit</title>
+
+    <!-- Ajoutez le lien vers jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fce4ec; /* Light pink background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white; /* White background for the container */
+            padding: 20px; /* Add padding for better visibility */
+            border-radius: 10px; /* Rounded corners for the container */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+            width: 100%; /* Set a specific width for the container */
+            max-width: 600px; /* Maximum width for responsiveness */
+        }
+
+        h1 {
+            color: #ea7ea2; /* Dark pink heading color */
+            margin-bottom: 30px; /* Increased bottom margin */
+            font-size: 2em; /* Larger font size */
+            text-align: center; /* Center the text */
+            font-family: cursive;
+        }
+
+        h2 {
+            color: #e0074f; /* Dark pink heading color */
+            margin-bottom: 30px; /* Increased bottom margin */
+            font-size: 1.2em; /* Larger font size */
+            text-align: center; /* Center the text */
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        h4 {
+            color: #e91e63; /* Dark pink text color */
+            font-style: italic; /* Italicize the text */
+            margin-top: 20px; /* Increased top margin */
+            font-size: 1em; /* Larger font size */
+            text-align: center; /* Center the text */
+        }
+
+        form {
+            width: 100%;
+        }
+
+        .form-label {
+            color: #c2185b; /* Darker pink label color */
+            font-weight: bold;
+            font-family: cursive;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #e91e63, #f48fb1); /* Pink gradient button color */
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block; /* Make it a block-level element */
+            margin: 0 auto; /* Center the button */
+        }
+
+        /* Style for the input field */
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #e91e63; /* Pink border */
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+    
+
+    
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenue à Comparini</h1>
+        <h2>Comparez et trouvez le prix de votre produit de beauté le moins cher</h2>
+        <h4>Nous comparons des produits de beauté entre divers sites de parapharmacie en Tunisie afin de vous trouver les prix les plus bas.</h4>
+        <form method="post" class="mb-4">
+            <div class="mb-3">
+                <label for="nom_produit" class="form-label">Nom du Produit :</label>
+                <input type="text" name="nom_produit" class="form-control" id="nom_produit" list="suggestions" required>
+                <datalist id="suggestions"></datalist>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Rechercher</button>
+        </form>
+    </div>
+
+    <!-- Ajoutez cette section dans votre fichier HTML -->
+    <script>
+        $(document).ready(function() {
+            $("#nom_produit").on("input", function() {
+                var inputText = $(this).val();
+
+                // Envoyer une requête au serveur Flask pour obtenir des suggestions
+                $.ajax({
+                    type: 'GET',
+                    url: '/suggest/' + inputText,
+                    success: function(data) {
+                        // Mettre à jour la liste de suggestions
+                        var datalist = $("#suggestions");
+                        datalist.empty();
+                        data.forEach(function(suggestion) {
+                            datalist.append("<option value='" + suggestion + "'>");
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
